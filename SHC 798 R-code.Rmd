@@ -11,17 +11,23 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Introduction
+
 ## R Markdown Preamble
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
+## Sample Inbuilt Dataset
+
 ```{r cars}
 summary(cars)
 ```
 
 ## Including Plots - Example
+
+### Embed Plot
 
 You can also embed plots, for example:
 
@@ -31,10 +37,91 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
-## Start of My SHC 798 R-code
+## Another Plot
+
+Let's create another Test plot
+
+```{r, test-plot }
+plot(cars,  col = "red", xlab = "Speed (mph)", ylab = "Distance (miles)" )
+
+```
+
+A summary of the data frame is given below
+
+```{r, cars-summary}
+pacman::p_load(knitr)
+kable(summary(cars))
+
+```
+
+# Start of My SHC 798 R-code
+
+## R basics
+
+1.  Why install [**Rtools**](https://cran.r-project.org/bin/windows/Rtools/)?
+
+2.  R Shiny [**Gallery**](http://shiny.rstudio.com/gallery/): There's Shiny for R and Shiny for Python
+
+## R Operations 1
+
+What can be done?
+
+```{r, Operations-1}
+
+# R as a calculator
+sqrt(12)
+x <- 3
+y <- x^2
+x+y
+
+# Creating Vectors
+v1 <- c(1,5, 80)
+v1
+v2 <- 2:11
+v2
+a <- c(1,6,10,22,7,13)
+mean(a)
+
+# Incomplete Statement
+3*(4 +
+     +2)
+#Assignments and Function Calls
+t.a <- 3*(4+2)
+t.b <- t.a + 2.5
+mn <- mean(c(t.a,t.b))
+mn
+
+```
+
+## R Help
+
+1.  Very useful and helpful  [**R Q&A Website**](http://stackexchange.com/)
+
+2.  Paradis 2005 - R for Beginners [Textbook]
+
+3.  R Reference Card [in the notes, 6 pages - Material from *R for Beginners*]
+
+4.  Base R Cheat Sheet [in the notes, 2 pages]
+
+5.  Venables et al 2017 - An introduction to R [Textbook]
+
+## R Operations 2
+
+```{r, Operations-2}
+# Import Data: Website
+url <- "https://stat.ethz.ch/Teaching/Datasets/WBL/sport.dat"
+d.sport <- read.table(url, header = TRUE)
+head(d.sport)
+
+# Setting the Working Directory
+# Use:
+getwd() #Prints the current working directory
+# setwd("D:/2025 MEng Transportation/SHC 798 R-Proj") ~ Sets the working directory
+# Alternatively, use “Session” → “Set Working Directory” → “Choose Directory…”
+# Import Data: Files
+  # - Different ways depending on the format (csv, txt, xlsx, etc.) 
+  # - Alternative: use the “Import Dataset” tool in RStudio (upper-right panel)
+# Save data or write data to a file
 
 
-
-
-
-
+```
