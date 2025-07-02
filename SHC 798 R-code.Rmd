@@ -348,15 +348,128 @@ boxplot(testdata$Sepal.Length ~ testdata$Species)
 versi.id <- testdata$Species == "versicolor"
 wilcox.test(x =testdata$Sepal.Length[versi.id], y = testdata$Sepal.Length[!versi.id], var.equal = TRUE)
 # Wilcoxon Rank Test also rejects the null hypothesis at 5% significance level. 
-# Wilcoxon Rank Test is the preferred test for a two-sample statistical test.
+
 ```
 
-s
+The **Wilcoxon Rank Test** is the *preferred* test for a two-sample statistical test.
 
-Correlation
+### Hypothesis Tests - Summary
 
-------------------------------------------------------------------------
+How to proceed:
 
-Regression
+-   Formulate the null & alternative hypotheses
+-   Choose the appropriate test
+-   Collate data, i.e., do an experiment
+-   Look at data: plot(), pairs(), hist(), boxplot()
+-   Validate assumptions of test (e.g., T-test, Wilcoxon test)
+-   Carry out the test and interpret result
 
-------------------------------------------------------------------------
+![Hypothesis Tests](Hypothesis_Tests.png)
+
+Hypothesis Tests – **Chi-squared test of independence**
+
+-   Hypothesis: H~0~: Independence of education and marriage status
+-   H~A~: Dependence of education and marriage status
+
+```{r, Chi-sq}
+url <- "https://stat.ethz.ch/Teaching/Datasets/edu.txt"
+d.edu <- read.table(url, header = TRUE)
+
+# Cross-tables in R
+# Count number of cases with same value:
+table(d.edu[, "Married"])
+
+# Cross-table
+table(d.edu[, "Education"], d.edu[, "Married"])
+
+# Now we perform a Chi-squared test
+chisq.test(d.edu[, "Education"], d.edu[, "Married"])
+
+# Result: Reject H0, i.e. education and marriage are dependent.
+
+```
+
+## Correlation
+
+```{r, Correlation}
+# Correlation
+url1 <- "https://stat.ethz.ch/Teaching/Datasets/basischOhneNA.dat"
+d.basisch <- read.table(url1, header = TRUE)
+str(d.basisch)
+
+# Calculate the (Pearson) correlation of ph and height:
+cor(d.basisch$ph, d.basisch$height)
+
+# Corresponding plot:
+plot(d.basisch$ph, d.basisch$heigh)
+
+```
+
+All plots show 2 variables with a correlation of 0.7
+
+-   one looks good
+-   another does not
+-   outlier(s) influence the result
+-   ALWAYS FIRST LOOK AT PLOTS
+
+## Regression
+
+### Simple Linear Regression (SLR)
+
+From the d.basisch() data,
+
+1.  **Response variable**: *height* or h.quad: Height of trees or squared height, respectively.
+2.  **Possible explanatory variables**: *ph*: pH-values of soil and l.sar: log(sodium absorption ratio)
+
+![The Simple Linear Regression Model](SLR-1.png)
+
+Let us pick the variable ph as the explanatory variable.
+
+```{r, SLR}
+# Fit to data using lm:
+fit <- lm(formula = height ~ ph, data = d.basisch)
+summary(fit)
+# Estimated equation: height = 28.7 – 3.0pH
+
+# Drawing line into scatterplot:
+plot(d.basisch$ph, d.basisch$height) + abline(fit)
+
+# Fit to data using lm:
+fit <- lm(formula = height ~ ph, data = d.basisch)
+summary(fit)
+# Estimated equation: height = 28.7 – 3.0pH
+
+# Drawing line into scatterplot:
+plot(d.basisch$ph, d.basisch$height) + abline(fit)
+```
+
+#### SLR - Residual Analysis
+
+Diagnostics plots are straightforward:
+
+```{r, SLR-Resid1}
+par(mfrow = c(2,2))
+plot(fit)
+```
+
+1.  Tukey-Anscombe plot (is the variance of the errors Ei constant? Is the regression function correct?)
+
+Q-Q plot (are the errors Ei normally distributed?)
+
+Scale location plot (similar to Tukey-Anscombe plot)
+
+Leverage plot (what points have a strong influence on the fit?)
+
+Residual plots by hand:
+
+```{r, SLR-Resid2}
+par(mfrow = c(1,2)) plot(fit$fitted,fit$resid) 
+
+#Tukey-Anscombe
+qqnorm(fit$resid) #quantil-Quantil Plot
+qqline(fit$resid) # adds the diagonal line
+```
+
+![Some bad Tukey-Anscombe plots](Bad-TA-Plots.png)
+
+### Multiple Linear Regression
