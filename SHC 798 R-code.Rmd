@@ -9,6 +9,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# tinytex::install_tinytex()
+# library(tinytex)
 ```
 
 # Introduction
@@ -17,9 +19,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
+See also the [**R Markdown Cookbook**](https://bookdown.org/yihui/rmarkdown-cookbook/))
+
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-## Sample Inbuilt Dataset
+## Sample Inbuilt Data Set
 
 ```{r cars}
 summary(cars)
@@ -37,13 +41,12 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
-## Another Plot
+### Another Plot
 
 Let's create another Test plot
 
 ```{r, test-plot }
 plot(cars,  col = "red", xlab = "Speed (mph)", ylab = "Distance (miles)" )
-
 ```
 
 A summary of the data frame is given below
@@ -51,7 +54,6 @@ A summary of the data frame is given below
 ```{r, cars-summary}
 pacman::p_load(knitr)
 kable(summary(cars))
-
 ```
 
 # Start of My SHC 798 R-code
@@ -90,7 +92,6 @@ t.a <- 3*(4+2)
 t.b <- t.a + 2.5
 mn <- mean(c(t.a,t.b))
 mn
-
 ```
 
 ## R Help
@@ -190,7 +191,6 @@ summary(d.sport)
 # apply(d.sport)
 head(d.sport)
 tail(d.sport)
-
 ```
 
 ### R Packages
@@ -250,7 +250,6 @@ legend("topright", legend = levels(iris[ , "Species"]), pch = 19, col = 1:3) # a
 # In an Rmd file such as this one, you need to call both the plot() & legend() functions at the same time. Or they should be in the same line of code
 
 pairs(iris[ , -5], col = iris[ , 5])
-
 ```
 
 ### Arguments of plot
@@ -267,7 +266,9 @@ pairs(iris[ , -5], col = iris[ , 5])
 
 **Low-level plotting functions**
 
-![Low-level plotting functions](Low_level.png) Useful plot functions
+![Low-level plotting functions](Low_level.png)
+
+**Useful plot functions**
 
 -   plot, pairs, interaction.plot
 -   boxplot, hist
@@ -280,7 +281,6 @@ pdf(file = "iris_plot.pdf") # open the graphics device
 plot(Sepal.Length ~ Sepal.Width, data = iris)
 # add anything else you want in your plots
 dev.off() #close the graphic device
-
 ```
 
 Several plots in one graphical window: splits the graphical window into 3 rows and 2 columns.
@@ -331,7 +331,6 @@ versi.id <- testdata$Species == "versicolor"
 par(mfrow=c(1,2))
 qqnorm(testdata$Sepal.Length[versi.id]); qqline(testdata$Sepal.Length[versi.id])
 qqnorm(testdata$Sepal.Length[!versi.id]); qqline(testdata$Sepal.Length[versi.id])
-                                  
 ```
 
 ```{r, HT-2-Sample}
@@ -348,7 +347,6 @@ boxplot(testdata$Sepal.Length ~ testdata$Species)
 versi.id <- testdata$Species == "versicolor"
 wilcox.test(x =testdata$Sepal.Length[versi.id], y = testdata$Sepal.Length[!versi.id], var.equal = TRUE)
 # Wilcoxon Rank Test also rejects the null hypothesis at 5% significance level. 
-
 ```
 
 The **Wilcoxon Rank Test** is the *preferred* test for a two-sample statistical test.
@@ -386,7 +384,6 @@ table(d.edu[, "Education"], d.edu[, "Married"])
 chisq.test(d.edu[, "Education"], d.edu[, "Married"])
 
 # Result: Reject H0, i.e. education and marriage are dependent.
-
 ```
 
 ## Correlation
@@ -401,8 +398,7 @@ str(d.basisch)
 cor(d.basisch$ph, d.basisch$height)
 
 # Corresponding plot:
-plot(d.basisch$ph, d.basisch$heigh)
-
+plot(d.basisch$ph, d.basisch$height)
 ```
 
 All plots show 2 variables with a correlation of 0.7
@@ -453,17 +449,15 @@ plot(fit)
 ```
 
 1.  Tukey-Anscombe plot (is the variance of the errors Ei constant? Is the regression function correct?)
-
-Q-Q plot (are the errors Ei normally distributed?)
-
-Scale location plot (similar to Tukey-Anscombe plot)
-
-Leverage plot (what points have a strong influence on the fit?)
+2.  Q-Q plot (are the errors Ei normally distributed?)
+3.  Scale location plot (similar to Tukey-Anscombe plot)
+4.  Leverage plot (what points have a strong influence on the fit?)
 
 Residual plots by hand:
 
 ```{r, SLR-Resid2}
-par(mfrow = c(1,2)) plot(fit$fitted,fit$resid) 
+par(mfrow = c(1,2))
+plot(fit$fitted,fit$resid) 
 
 #Tukey-Anscombe
 qqnorm(fit$resid) #quantil-Quantil Plot
@@ -473,3 +467,24 @@ qqline(fit$resid) # adds the diagonal line
 ![Some bad Tukey-Anscombe plots](Bad-TA-Plots.png)
 
 ### Multiple Linear Regression
+
+Expand the simple linear model to more than one explanatory variable.
+
+![The Multiple Linear Regression Model](MLR.png)
+
+```{r, MLR}
+# Fit the model with lm
+fitm <- lm(height ~ ph + l.sar, data = d.basisch)
+summary(fitm)
+```
+
+#### MLR - Residual Analysis
+
+```{r, MLR-Resid}
+# Look at the same plots as for simple linear regression
+plot(fitm)
+
+# It may help to plot the explanatory variables against the residuals.
+plot(d.basisch$ph, fitm$resid)
+plot(d.basisch$l.sar, fitm$resid)
+```
