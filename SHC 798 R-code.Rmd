@@ -3,9 +3,9 @@ title: "SHC 798 R-code"
 author: "Richard Lubega"
 date: "`r Sys.Date()`"
 output:
+  html_document: default
   pdf_document:
     latex_engine: xelatex
-  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -488,4 +488,21 @@ plot(fitm)
 # It may help to plot the explanatory variables against the residuals.
 plot(d.basisch$ph, fitm$resid)
 plot(d.basisch$l.sar, fitm$resid)
+```
+
+# Other
+
+## Graphics - Demo
+
+```{r, Graphics}
+demo(graphics)
+
+demo(image)
+
+demo(persp)
+
+pacman::p_load(scatterplot3d); example(scatterplot3d)
+
+example(points)
+
 ```
