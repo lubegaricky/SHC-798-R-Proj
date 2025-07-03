@@ -3,9 +3,9 @@ title: "SHC 798 R-code"
 author: "Richard Lubega"
 date: "`r Sys.Date()`"
 output:
-  html_document: default
   pdf_document:
     latex_engine: xelatex
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -322,7 +322,8 @@ Approach: Hypothesis testing in 6 steps:
 Hypothesis Tests – An Example
 
 ```{r, HT-1-sample}
-# Is the sepal length of versicolor different to that of virginica? Let’s use a *t-Test and a *Wilcoxon rank-sum test.
+# Is the sepal length of versicolor different to that of virginica?
+#Let’s use a *t-Test and a *Wilcoxon rank-sum test.
 testdata <- iris[iris$Species != "setosa", c("Sepal.Length", "Species")]
 testdata$Species <- droplevels(testdata$Species)
 str(testdata) # prepare and check the data
@@ -338,7 +339,8 @@ qqnorm(testdata$Sepal.Length[!versi.id]); qqline(testdata$Sepal.Length[versi.id]
 # Two-sample t-test:
 versi.id <- testdata$Species == "versicolor"
 t.test(x =testdata$Sepal.Length[versi.id], y = testdata$Sepal.Length[!versi.id], var.equal = TRUE)
-# T-test rejects the null hypothesis at 5% significance level. Do not forget to visually check the normality assumptions (QQ-plot)
+# T-test rejects the null hypothesis at 5% significance level.
+# Do not forget to visually check the normality assumptions (QQ-plot)
 ```
 
 ```{r, Wilcoxon}
@@ -430,14 +432,6 @@ summary(fit)
 
 # Drawing line into scatterplot:
 plot(d.basisch$ph, d.basisch$height) + abline(fit)
-
-# Fit to data using lm:
-fit <- lm(formula = height ~ ph, data = d.basisch)
-summary(fit)
-# Estimated equation: height = 28.7 – 3.0pH
-
-# Drawing line into scatterplot:
-plot(d.basisch$ph, d.basisch$height) + abline(fit)
 ```
 
 #### SLR - Residual Analysis
@@ -461,7 +455,7 @@ par(mfrow = c(1,2))
 plot(fit$fitted,fit$resid) 
 
 #Tukey-Anscombe
-qqnorm(fit$resid) #quantil-Quantil Plot
+qqnorm(fit$resid) #Quantile-Quantile Plot
 qqline(fit$resid) # adds the diagonal line
 ```
 
